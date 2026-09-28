@@ -1,23 +1,1022 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MY INTRODUCTION</title>
- </head>
- <body>
-    <h1>It's About Me</h1>
-    <h2>My Name</h2>
-    <p>My name is Siddharth Rajpruohit</p>
-    <h2>My Course</h2>
-    <p>I am an IMCA Student</p>
-    <h2>My College</h2>
-    <p>I study at JG University</p>
-    <h2>Hobby</h2>
-    <p>playing kabaddi and chess</p>
-    <h2>What I learn</h2>
-    <p> I am learning HTML</p>
-    <a href="http://www.google.com">Visit Google</a><br><br>
-    <a href="http://www.instagram.com/sanatani_siddhu_84">Visit Instagram Account</a><br><br>
-<img src="myphoto.jpg" alt="My Photo" width="200">
- </body>
- </html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C Programming MCQ Test</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f4f8;
+    color: #172033;
+}
+
+.container {
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+h1 {
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccd3df;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+button {
+    border: 0;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.primary {
+    width: 100%;
+    margin-top: 16px;
+    background: #2563eb;
+    color: white;
+}
+
+.option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin: 10px 0;
+    background: #f5f7fa;
+    border: 1px solid #d8dee8;
+}
+
+.option.selected {
+    background: #dbeafe;
+    border-color: #2563eb;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.timer {
+    font-weight: bold;
+    padding: 9px 12px;
+    border-radius: 8px;
+    background: #fee2e2;
+}
+
+.progress {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 10px 0 22px;
+}
+
+.bar {
+    height: 100%;
+    width: 0;
+    background: #2563eb;
+}
+
+.warning {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+.small {
+    color: #667085;
+    font-size: 14px;
+}
+
+.result {
+    text-align: center;
+}
+
+.violation {
+    color: #b42318;
+}
+</style>
+</head>
+
+<body oncontextmenu="return false">
+
+<div class="container">
+
+<!-- START SCREEN -->
+<div class="card" id="startScreen">
+
+<h1>C Programming MCQ Test</h1>
+
+<p class="small">
+10 Random Questions • 10 Minutes
+</p>
+
+<div class="warning">
+During the test, switching tabs/windows or exiting fullscreen
+will be recorded as a violation.
+</div>
+
+<label>Student Name</label>
+
+<input
+    id="studentName"
+    maxlength="60"
+    placeholder="Enter your name"
+>
+
+<button class="primary" onclick="startTest()">
+Start Test
+</button>
+
+</div>
+
+
+<!-- TEST SCREEN -->
+<div class="card hidden" id="testScreen">
+
+<div class="top">
+
+<strong id="studentLabel"></strong>
+
+<div class="timer" id="timer">
+10:00
+</div>
+
+</div>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+<div id="question"></div>
+
+<div id="options"></div>
+
+<button
+    class="primary"
+    onclick="nextQuestion()"
+    id="nextBtn">
+Next
+</button>
+
+<p class="small" id="violationText"></p>
+
+</div>
+
+
+<!-- RESULT -->
+<div class="card hidden result" id="resultScreen">
+
+<h1>Test Submitted</h1>
+
+<p id="resultText"></p>
+
+<p id="violationResult"></p>
+
+<button
+    class="primary"
+    onclick="location.reload()">
+Start New Test
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ================================
+   SETTINGS
+================================ */
+
+const TEST_TIME = 600;
+
+/*
+IMPORTANT:
+
+Later, when we create the WhatsApp backend,
+put its URL here.
+
+Example:
+
+const ALERT_API =
+"https://your-worker.workers.dev";
+
+For now leave it empty.
+*/
+
+const ALERT_API = "";
+
+
+/* ================================
+   QUESTION BANK
+================================ */
+
+const bank = [
+
+{
+q:"Which symbol is used to end a C statement?",
+o:[".",":",";","#"],
+a:2
+},
+
+{
+q:"Which function is the entry point of a C program?",
+o:["start()","main()","run()","begin()"],
+a:1
+},
+
+{
+q:"Which format specifier is used for an int?",
+o:["%f","%c","%d","%s"],
+a:2
+},
+
+{
+q:"Which header file is commonly used for printf() and scanf()?",
+o:["math.h","stdio.h","string.h","stdlib.h"],
+a:1
+},
+
+{
+q:"What is the value of 10 % 3 in C?",
+o:["1","2","3","0"],
+a:0
+},
+
+{
+q:"Which operator is used for logical AND?",
+o:["&","&&","||","!"],
+a:1
+},
+
+{
+q:"Which keyword is used to declare a constant variable?",
+o:["fixed","const","constant","static"],
+a:1
+},
+
+{
+q:"Which loop checks its condition before executing the body?",
+o:["do-while","while","Both while and for","switch"],
+a:2
+},
+
+{
+q:"Which statement is used to choose between multiple cases?",
+o:["if","switch","goto","break"],
+a:1
+},
+
+{
+q:"What does \\n do in printf()?",
+o:["Adds a space","Creates a new line","Deletes text","Stops the program"],
+a:1
+},
+
+{
+q:"Which data type stores a single character?",
+o:["char","string","character","text"],
+a:0
+},
+
+{
+q:"What is the correct comment for a single line in C?",
+o:["<!-- -->","//","##","**"],
+a:1
+},
+
+{
+q:"Which operator assigns a value to a variable?",
+o:["==","=","=>","!="],
+a:1
+},
+
+{
+q:"Which keyword returns no value from a function?",
+o:["null","empty","void","zero"],
+a:2
+},
+
+{
+q:"Which is a valid identifier in C?",
+o:["2value","my-value","my_value","float"],
+a:2
+},
+
+{
+q:"Which function is used to read formatted input?",
+o:["printf()","scanf()","input()","read()"],
+a:1
+},
+
+{
+q:"What is the result of 5 / 2 when both are int?",
+o:["2.5","3","2","2.0"],
+a:2
+},
+
+{
+q:"Which operator means 'not equal to'?",
+o:["<>","!=","~=","!=="],
+a:1
+},
+
+{
+q:"Which keyword exits a loop or switch?",
+o:["stop","exit","break","end"],
+a:2
+},
+
+{
+q:"Which data type can store decimal values?",
+o:["int","float","char","void"],
+a:1
+}
+
+];
+
+
+/* ================================
+   VARIABLES
+================================ */
+
+let questions = [];
+
+let index = 0;
+
+let score = 0;
+
+let selected = -1;
+
+let violations = [];
+
+let timerId;
+
+let seconds = TEST_TIME;
+
+let started = false;
+
+
+/* ================================
+   SHUFFLE
+================================ */
+
+function shuffle(array) {
+
+    return array.sort(() => Math.random() - 0.5);
+
+}
+
+
+/* ================================
+   START TEST
+================================ */
+
+function startTest() {
+
+    const name =
+        document.getElementById("studentName")
+        .value
+        .trim();
+
+    if (!name) {
+
+        alert("Please enter your name.");
+
+        return;
+    }
+
+
+    document.getElementById("studentLabel")
+        .textContent =
+        "Student: " + name;
+
+
+    questions =
+        shuffle([...bank])
+        .slice(0,10)
+        .map(x => ({
+            ...x,
+            o:[...x.o]
+        }));
+
+
+    /*
+    Shuffle options
+    while keeping correct answer
+    */
+
+    questions.forEach(q => {
+
+        const correct =
+            q.o[q.a];
+
+        q.o = shuffle(q.o);
+
+        q.a =
+            q.o.indexOf(correct);
+
+    });
+
+
+    document.getElementById("startScreen")
+        .classList.add("hidden");
+
+    document.getElementById("testScreen")
+        .classList.remove("hidden");
+
+
+    started = true;
+
+    enterFullscreen();
+
+    renderQuestion();
+
+
+    timerId =
+        setInterval(() => {
+
+            seconds--;
+
+            updateTimer();
+
+            if (seconds <= 0) {
+
+                submitTest("Time over");
+
+            }
+
+        },1000);
+
+}
+
+
+/* ================================
+   FULLSCREEN
+================================ */
+
+function enterFullscreen() {
+
+    if (document.documentElement.requestFullscreen) {
+
+        document.documentElement
+            .requestFullscreen()
+            .catch(() => {});
+
+    }
+
+}
+
+
+/* ================================
+   DISPLAY QUESTION
+================================ */
+
+function renderQuestion() {
+
+    selected = -1;
+
+    const q = questions[index];
+
+
+    document.getElementById("question")
+        .innerHTML =
+        "<h2>Q" +
+        (index + 1) +
+        ". " +
+        q.q +
+        "</h2>";
+
+
+    document.getElementById("options")
+        .innerHTML = "";
+
+
+    q.o.forEach((option,i) => {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent =
+            String.fromCharCode(65+i)
+            + ". "
+            + option;
+
+
+        button.onclick = () =>
+            selectOption(i,button);
+
+
+        document.getElementById("options")
+            .appendChild(button);
+
+    });
+
+
+    document.getElementById("bar")
+        .style.width =
+        ((index)/10*100) + "%";
+
+
+    document.getElementById("nextBtn")
+        .textContent =
+        index === 9
+        ? "Submit Test"
+        : "Next";
+
+}
+
+
+/* ================================
+   SELECT OPTION
+================================ */
+
+function selectOption(i,button) {
+
+    selected = i;
+
+
+    document.querySelectorAll(".option")
+        .forEach(x =>
+            x.classList.remove("selected")
+        );
+
+
+    button.classList.add("selected");
+
+}
+
+
+/* ================================
+   NEXT
+================================ */
+
+function nextQuestion() {
+
+    if (selected < 0) {
+
+        alert("Please select an answer.");
+
+        return;
+
+    }
+
+
+    if (selected === questions[index].a) {
+
+        score++;
+
+    }
+
+
+    if (index === 9) {
+
+        submitTest("Completed");
+
+        return;
+
+    }
+
+
+    index++;
+
+    renderQuestion();
+
+}
+
+
+/* ================================
+   TIMER
+================================ */
+
+function updateTimer() {
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    const secs =
+        seconds % 60;
+
+
+    document.getElementById("timer")
+        .textContent =
+        String(minutes).padStart(2,"0")
+        + ":"
+        +
+        String(secs).padStart(2,"0");
+
+}
+
+
+/* ================================
+   VIOLATION LOG
+================================ */
+
+function logViolation(type) {
+
+    if (!started) return;
+
+
+    const time =
+        new Date()
+        .toLocaleTimeString();
+
+
+    violations.push({
+        type:type,
+        time:time
+    });
+
+
+    document.getElementById("violationText")
+        .textContent =
+        "Violations detected: "
+        +
+        violations.length;
+
+
+    sendWhatsAppAlert(
+        type,
+        time
+    );
+
+}
+
+
+/* ================================
+   WHATSAPP ALERT
+================================ */
+
+async function sendWhatsAppAlert(
+    eventType,
+    time
+) {
+
+    /*
+    Frontend DOES NOT contain
+    WhatsApp token.
+
+    The backend will handle
+    the WhatsApp API.
+    */
+
+    if (
+        !ALERT_API ||
+        ALERT_API.trim() === ""
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        await fetch(
+            ALERT_API,
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body:JSON.stringify({
+
+                    student:
+                    document
+                    .getElementById(
+                        "studentName"
+                    )
+                    .value
+                    .trim(),
+
+                    event:eventType,
+
+                    time:time,
+
+                    question:
+                    (index + 1)
+                    + "/10"
+
+                }),
+
+                keepalive:true
+            }
+        );
+
+    }
+
+    catch(error) {
+
+        console.log(
+            "WhatsApp alert failed."
+        );
+
+    }
+
+}
+
+
+/* ================================
+   TAB SWITCH
+================================ */
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        if (
+            started &&
+            document.hidden
+        ) {
+
+            logViolation(
+                "Tab switch / page hidden"
+            );
+
+        }
+
+    }
+);
+
+
+/* ================================
+   WINDOW CHANGE
+================================ */
+
+window.addEventListener(
+    "blur",
+    () => {
+
+        if (started) {
+
+            logViolation(
+                "Window lost focus"
+            );
+
+        }
+
+    }
+);
+
+
+/* ================================
+   FULLSCREEN EXIT
+================================ */
+
+document.addEventListener(
+    "fullscreenchange",
+    () => {
+
+        if (
+            started &&
+            !document.fullscreenElement
+        ) {
+
+            logViolation(
+                "Fullscreen exited"
+            );
+
+        }
+
+    }
+);
+
+
+/* ================================
+   COPY
+================================ */
+
+document.addEventListener(
+    "copy",
+    event => {
+
+        if (started) {
+
+            event.preventDefault();
+
+            logViolation(
+                "Copy attempt"
+            );
+
+        }
+
+    }
+);
+
+
+/* ================================
+   CUT
+================================ */
+
+document.addEventListener(
+    "cut",
+    event => {
+
+        if (started) {
+
+            event.preventDefault();
+
+            logViolation(
+                "Cut attempt"
+            );
+
+        }
+
+    }
+);
+
+
+/* ================================
+   PASTE
+================================ */
+
+document.addEventListener(
+    "paste",
+    event => {
+
+        if (started) {
+
+            event.preventDefault();
+
+            logViolation(
+                "Paste attempt"
+            );
+
+        }
+
+    }
+);
+
+
+/* ================================
+   KEYBOARD SHORTCUTS
+================================ */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (!started) return;
+
+
+        const key =
+            event.key.toLowerCase();
+
+
+        if (
+            (event.ctrlKey ||
+             event.metaKey) &&
+            [
+                "c",
+                "v",
+                "x",
+                "u",
+                "s",
+                "p"
+            ].includes(key)
+        ) {
+
+            event.preventDefault();
+
+            logViolation(
+                "Restricted keyboard shortcut"
+            );
+
+        }
+
+
+        if (event.key === "F12") {
+
+            event.preventDefault();
+
+            logViolation(
+                "Developer tools shortcut"
+            );
+
+        }
+
+    }
+);
+
+
+/* ================================
+   SUBMIT TEST
+================================ */
+
+function submitTest(reason) {
+
+    if (!started) return;
+
+
+    started = false;
+
+    clearInterval(timerId);
+
+
+    const name =
+        document.getElementById(
+            "studentName"
+        ).value.trim();
+
+
+    if (document.fullscreenElement) {
+
+        document
+        .exitFullscreen()
+        .catch(() => {});
+
+    }
+
+
+    document.getElementById(
+        "testScreen"
+    ).classList.add("hidden");
+
+
+    document.getElementById(
+        "resultScreen"
+    ).classList.remove("hidden");
+
+
+    document.getElementById(
+        "resultText"
+    ).innerHTML =
+
+        "<strong>" +
+        name +
+        "</strong>" +
+
+        "<br>Score: " +
+        score +
+        "/10" +
+
+        "<br>Status: " +
+        reason;
+
+
+    document.getElementById(
+        "violationResult"
+    ).innerHTML =
+
+        violations.length
+
+        ?
+
+        `<span class="violation">
+        Violations recorded:
+        ${violations.length}
+        </span>
+        <br>
+        ${violations
+            .map(v =>
+                v.type +
+                " — " +
+                v.time
+            )
+            .join("<br>")}`
+
+        :
+
+        "No browser-level violations recorded.";
+
+}
+
+</script>
+
+</body>
+</html>
